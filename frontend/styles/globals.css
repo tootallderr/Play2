@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Video.js custom styling */
+.video-js {
+  @apply w-full h-full bg-black;
+}
+
+.video-js .vjs-big-play-button {
+  @apply text-media-accent border-media-accent;
+}
+
+.video-js:hover .vjs-big-play-button {
+  @apply bg-media-accent text-white;
+}
+
+.video-js .vjs-control-bar {
+  @apply bg-gradient-to-t from-black/80 to-transparent;
+}
+
+.video-js .vjs-progress-control .vjs-progress-holder {
+  @apply bg-gray-600;
+}
+
+.video-js .vjs-progress-control .vjs-play-progress {
+  @apply bg-media-accent;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-media-gray;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Base styles */
+body {
+  @apply bg-media-dark text-white;
+}
+
+/* Custom component styles */
+.media-card {
+  @apply bg-media-gray rounded-lg overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-xl;
+}
+
+.mode-badge {
+  @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+}
+
+.mode-badge.weed {
+  @apply bg-green-500/20 text-green-400;
+}
+
+.mode-badge.theo-von {
+  @apply bg-orange-500/20 text-orange-400;
+}
+
+.mode-badge.joey-diaz {
+  @apply bg-red-500/20 text-red-400;
+}
+
+.mode-badge.fact-check {
+  @apply bg-blue-500/20 text-blue-400;
+}
+
+.mode-badge.trivia {
+  @apply bg-purple-500/20 text-purple-400;
+}
+
+.mode-badge.original {
+  @apply bg-gray-500/20 text-gray-400;
+}
