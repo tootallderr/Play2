@@ -65,7 +65,13 @@ app.include_router(player_router, prefix="/api/player", tags=["Player"])
 app.include_router(captions_router, prefix="/api/captions", tags=["Captions"])
 
 # Serve static files (media content)
-app.mount("/media", StaticFiles(directory=os.getenv("WATCHED_DIRS", "/tmp").split(",")[0]), name="media")
+media_dir = os.getenv("WATCHED_DIRS", "./data/media").split(",")[0]
+if os.path.exists(media_dir):
+    app.mount("/media", StaticFiles(directory=media_dir), name="media")
+else:
+    # Create media directory if it doesn't exist
+    os.makedirs(media_dir, exist_ok=True)
+    app.mount("/media", StaticFiles(directory=media_dir), name="media")
 
 @app.get("/")
 async def root():
