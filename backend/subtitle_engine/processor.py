@@ -9,6 +9,7 @@ import webvtt
 import subprocess
 import ollama
 from dotenv import load_dotenv
+from caption_modes.modes import CaptionModes
 
 load_dotenv()
 
@@ -36,39 +37,9 @@ class SubtitleProcessor:
         self.cache_dir = Path(os.getenv('CAPTION_MODE_CACHE_DIR', './data/cache'))
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         
-        # Available caption modes
-        self.caption_modes = {
-            'weed': {
-                'name': '🥦 Weed Mode',
-                'description': 'Chill, slangy, stoner-friendly vibes',
-                'prompt': """Transform this caption into a chill, stoner-friendly version. Use slang like "dude", "man", "totally", etc. Make it sound relaxed and casual. Keep the meaning but make it sound like someone high is describing what's happening. Be laid back and use simple words."""
-            },
-            'theo_von': {
-                'name': '🎣 Theo Von Mode',
-                'description': 'Southern metaphors and absurd storytelling',
-                'prompt': """Rewrite this caption in Theo Von's style. Use bizarre Southern metaphors, weird personal anecdotes, and absurd comparisons. Make it funny but still convey the scene. Think Louisiana swamp stories mixed with random observations about life. Keep it entertaining and slightly nonsensical."""
-            },
-            'joey_diaz': {
-                'name': '🥩 Joey Diaz Mode',
-                'description': 'Explosive Bronx-style storytelling',
-                'prompt': """Transform this caption into Joey Diaz's explosive storytelling style. Use phrases like "Listen to me", "Back in the day", add some energy and passion. Make it sound like Joey is describing the scene with his characteristic intensity and Brooklyn attitude. Keep it colorful but appropriate."""
-            },
-            'fact_check': {
-                'name': '🧠 Fact-Check Mode',
-                'description': 'Adds quick fact-checks to statements',
-                'prompt': """For this caption, add brief fact-checks or clarifications in brackets after any claims that might be historically, scientifically, or factually questionable. If something is accurate, you can add [✓ Correct] or similar. Keep additions short and informative."""
-            },
-            'trivia': {
-                'name': '🧾 Trivia Mode',
-                'description': 'Sprinkles in fun facts about people/places/topics',
-                'prompt': """Add interesting trivia or fun facts related to anything mentioned in this caption. Include brief tidbits in brackets like [Fun fact: ...] or [Did you know: ...]. Keep facts relevant and entertaining but don't overwhelm the original caption."""
-            },
-            'original': {
-                'name': '📝 Original',
-                'description': 'Unmodified original captions',
-                'prompt': None
-            }
-        }
+        # Load caption modes from our consolidated modes file
+        self.caption_modes = CaptionModes.get_all_modes()
+        self.quick_transforms = CaptionModes.get_quick_transforms()
     
     def get_available_modes(self) -> Dict:
         """Get list of available caption transformation modes"""
@@ -189,6 +160,10 @@ class SubtitleProcessor:
                 
         except Exception as e:
             print(f"Error transforming caption with Ollama: {e}")
+            # Fallback to quick transform if available
+            if mode in self.quick_transforms:
+                print(f"🔄 Using quick transform fallback for {mode} mode")
+                return self.quick_transforms[mode](text)
             return text
     
     async def transform_subtitles(self, subtitle_path: str, mode: str, batch_size: int = 5) -> Dict:
