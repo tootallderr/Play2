@@ -152,6 +152,152 @@ Transformed: "Verily, the fair maiden doth sing with such beauteous voice that a
 Example:
 Original: "The man was eating pizza."
 Transformed: "Here we observe the male human in his natural habitat, engaging in the ancient ritual of pizza consumption. Remarkable how he uses primitive tools to transfer sustenance to his mouth - truly fascinating behavior.\""""
+            },
+            'eli5': {
+                'name': 'Explain Like I\'m 5',
+                'description': 'Simplify complex concepts for a 5-year-old',
+                'prompt': """Rewrite this caption as if explaining to a 5-year-old child. Use:
+- Very simple words and short sentences
+- Comparisons to things kids know (toys, animals, games)
+- Avoid jargon or complex concepts
+- Make it fun and engaging
+- Use "like when you..." comparisons
+
+Example:
+Original: "The engineer calibrated the sophisticated machinery."
+Transformed: "The person who fixes things made the big machine work better, like when you adjust your toy so it works just right!\""""
+            },
+            'gen_z': {
+                'name': 'Gen Z Slang',
+                'description': 'Transform into Gen Z internet slang and expressions',
+                'prompt': """Transform this caption into Gen Z slang and expressions. Use:
+- Terms like "no cap", "fr fr", "bussin", "slay", "periodt", "bet"
+- Internet slang and abbreviations
+- Emotive language and hyperbole
+- Modern social media expressions
+- Keep it authentic to current Gen Z speech
+
+Example:
+Original: "The food was really good."
+Transformed: "This food was absolutely bussin fr fr, no cap! It's giving main character energy periodt 💅\""""
+            },
+            'conspiracy': {
+                'name': 'Conspiracy Theorist',
+                'description': 'Add conspiracy theory skepticism and alternative explanations',
+                'prompt': """Rewrite this caption with conspiracy theorist skepticism. Add phrases like:
+- "But what they don't want you to know..."
+- "Wake up, sheeple!"
+- "This is clearly a cover-up for..."
+- "Connect the dots..."
+- "The mainstream media won't tell you..."
+- Question official narratives
+- Keep it satirical, not harmful
+
+Example:
+Original: "The weather forecast shows rain tomorrow."
+Transformed: "The weather forecast shows rain tomorrow... but what they don't want you to know is this is clearly weather manipulation! Wake up, sheeple!\""""
+            },
+            'motivational': {
+                'name': 'Motivational Speaker',
+                'description': 'Transform into inspirational motivational speech',
+                'prompt': """Transform this caption into motivational speaker style. Use:
+- High energy and enthusiasm
+- Phrases like "You can do it!", "Believe in yourself!", "Never give up!"
+- Turn any situation into a life lesson
+- Positive spin on everything
+- Action-oriented language
+- Empowerment themes
+
+Example:
+Original: "The person failed the test."
+Transformed: "This champion just experienced a LEARNING OPPORTUNITY! Every setback is a SETUP for a COMEBACK! They're going to DOMINATE that next test! Believe in yourself!\""""
+            },
+            'boomer': {
+                'name': 'Boomer Commentary',
+                'description': 'Transform into nostalgic boomer perspective',
+                'prompt': """Transform this caption into boomer commentary style. Include:
+- "Back in my day..." references
+- Complaints about modern technology
+- Nostalgia for simpler times
+- References to hard work and values
+- Skepticism about new trends
+- "Kids these days..." observations
+
+Example:
+Original: "The teenager was using their smartphone."
+Transformed: "Back in my day, we didn't need fancy computers in our pockets! Kids these days are always staring at screens instead of talking face-to-face like civilized people.\""""
+            },
+            'academic': {
+                'name': 'Academic Paper',
+                'description': 'Transform into formal academic writing style',
+                'prompt': """Transform this caption into academic paper style. Use:
+- Formal, scholarly language
+- Complex sentence structures
+- Terms like "Furthermore", "Moreover", "It can be observed that"
+- Objective, analytical tone
+- References to methodology and analysis
+- Professional terminology
+
+Example:
+Original: "The cat sat on the mat."
+Transformed: "Upon careful observation, it can be noted that the feline specimen positioned itself in a seated configuration upon the textile floor covering, demonstrating typical domestic behavior patterns.\""""
+            },
+            'sports_commentator': {
+                'name': 'Sports Commentator',
+                'description': 'Transform into live sports commentary',
+                'prompt': """Transform this caption into sports commentator style. Use:
+- High energy play-by-play language
+- Terms like "AND HE SCORES!", "What a move!", "Unbelievable!"
+- Building excitement and tension
+- Color commentary insights
+- Sports metaphors and terminology
+
+Example:
+Original: "The person opened the door."
+Transformed: "AND HERE THEY GO! Beautiful approach to the door! What technique! AND THEY'VE DONE IT! The door is OPEN! What a performance! The crowd goes wild!\""""
+            },
+            'film_noir': {
+                'name': 'Film Noir Detective',
+                'description': 'Transform into gritty 1940s detective narrative',
+                'prompt': """Transform this caption into film noir detective style. Use:
+- First-person narrative voice
+- Gritty, atmospheric descriptions
+- 1940s slang and expressions
+- Mysterious and dramatic tone
+- References to shadows, rain, danger
+- Hard-boiled detective vocabulary
+
+Example:
+Original: "The woman walked down the street."
+Transformed: "She moved through the shadows like trouble in a silk dress. The rain-slicked streets reflected her secrets, and I knew this dame was going to change everything.\""""
+            },
+            'cooking_show': {
+                'name': 'Cooking Show Host',
+                'description': 'Transform into enthusiastic cooking show commentary',
+                'prompt': """Transform this caption into cooking show host style. Use:
+- Enthusiastic, instructional tone
+- Cooking terms and techniques
+- Phrases like "Beautiful!", "Look at that!", "Absolutely gorgeous!"
+- Step-by-step descriptions
+- Sensory language about taste, smell, texture
+
+Example:
+Original: "The person mixed the ingredients."
+Transformed: "Now we're going to fold these ingredients together - look at that beautiful consistency! You can see how it's coming together perfectly. Absolutely gorgeous texture!\""""
+            },
+            'yoga_instructor': {
+                'name': 'Yoga Instructor',
+                'description': 'Transform into calming yoga instruction style',
+                'prompt': """Transform this caption into yoga instructor style. Use:
+- Calming, soothing language
+- Mindfulness and presence focus
+- Phrases like "breathe into", "find your center", "honor your body"
+- Metaphors about flow and balance
+- Gentle, encouraging tone
+
+Example:
+Original: "The person sat down."
+Transformed: "Beautiful! Now we're finding our seated position, grounding through the sit bones, breathing into this moment of stillness. Honor where your body is today.\""""
             }
         }
     
@@ -171,7 +317,17 @@ Transformed: "Here we observe the male human in his natural habitat, engaging in
             'weed': CaptionModes._quick_weed,
             'pirate': CaptionModes._quick_pirate,
             'shakespearean': CaptionModes._quick_shakespearean,
-            'narrator': CaptionModes._quick_narrator
+            'narrator': CaptionModes._quick_narrator,
+            'eli5': CaptionModes._quick_eli5,
+            'gen_z': CaptionModes._quick_gen_z,
+            'conspiracy': CaptionModes._quick_conspiracy,
+            'motivational': CaptionModes._quick_motivational,
+            'boomer': CaptionModes._quick_boomer,
+            'academic': CaptionModes._quick_academic,
+            'sports_commentator': CaptionModes._quick_sports_commentator,
+            'film_noir': CaptionModes._quick_film_noir,
+            'cooking_show': CaptionModes._quick_cooking_show,
+            'yoga_instructor': CaptionModes._quick_yoga_instructor
         }
     
     @staticmethod
@@ -314,6 +470,131 @@ Transformed: "Here we observe the male human in his natural habitat, engaging in
         ender = random.choice(enders)
         
         return f"{starter} {text.lower()}{ender}."
+    
+    @staticmethod
+    def _quick_eli5(text: str) -> str:
+        """Quick ELI5 transformation"""
+        replacements = {
+            'complex': 'tricky', 'sophisticated': 'fancy', 'analyze': 'look at',
+            'demonstrate': 'show', 'investigate': 'check out', 'examine': 'look at',
+            'approximately': 'about', 'subsequently': 'then', 'therefore': 'so'
+        }
+        
+        transformed = text
+        for old, new in replacements.items():
+            transformed = transformed.replace(old, new)
+        
+        if len(transformed) > 30:
+            return f"{transformed} - just like when you play with your toys!"
+        return f"{transformed}, like in your favorite game!"
+    
+    @staticmethod
+    def _quick_gen_z(text: str) -> str:
+        """Quick Gen Z transformation"""
+        gen_z_additions = [
+            "no cap", "fr fr", "periodt", "and I oop-", "it's giving main character energy",
+            "this hits different", "we love to see it", "living for this"
+        ]
+        
+        addition = random.choice(gen_z_additions)
+        if len(text) > 20:
+            return f"{text} - {addition} 💅"
+        return f"{text}, {addition}"
+    
+    @staticmethod
+    def _quick_conspiracy(text: str) -> str:
+        """Quick conspiracy transformation"""
+        conspiracy_starters = [
+            "But what they don't want you to know is",
+            "Wake up, sheeple!",
+            "This is clearly a cover-up for",
+            "Connect the dots...",
+            "The mainstream media won't tell you"
+        ]
+        
+        starter = random.choice(conspiracy_starters)
+        return f"{text}... {starter} the REAL truth behind this!"
+    
+    @staticmethod
+    def _quick_motivational(text: str) -> str:
+        """Quick motivational transformation"""
+        motivational_additions = [
+            "You can DO this!", "Believe in yourself!", "Never give up!",
+            "This is your moment to SHINE!", "Turn that setback into a COMEBACK!",
+            "You're UNSTOPPABLE!", "Make it happen, CHAMPION!"
+        ]
+        
+        addition = random.choice(motivational_additions)
+        return f"{text.upper()} - {addition}"
+    
+    @staticmethod
+    def _quick_boomer(text: str) -> str:
+        """Quick boomer transformation"""
+        boomer_starters = [
+            "Back in my day,", "Kids these days", "When I was young,",
+            "We didn't need fancy", "In the good old days"
+        ]
+        
+        starter = random.choice(boomer_starters)
+        return f"{starter} we handled things differently. {text} - times were simpler then!"
+    
+    @staticmethod
+    def _quick_academic(text: str) -> str:
+        """Quick academic transformation"""
+        academic_starters = [
+            "Upon careful observation,", "It can be noted that", "Furthermore,",
+            "The data suggests that", "Analysis reveals that"
+        ]
+        
+        starter = random.choice(academic_starters)
+        return f"{starter} {text.lower()}, demonstrating significant behavioral patterns."
+    
+    @staticmethod
+    def _quick_sports_commentator(text: str) -> str:
+        """Quick sports commentator transformation"""
+        sports_additions = [
+            "AND THE CROWD GOES WILD!", "What a performance!", "UNBELIEVABLE!",
+            "Ladies and gentlemen, WHAT A MOVE!", "SPECTACULAR!", "ABSOLUTELY INCREDIBLE!"
+        ]
+        
+        addition = random.choice(sports_additions)
+        return f"{text.upper()}! {addition}"
+    
+    @staticmethod
+    def _quick_film_noir(text: str) -> str:
+        """Quick film noir transformation"""
+        noir_additions = [
+            "in this rain-soaked city", "like trouble in a silk dress",
+            "through the shadows", "in the dead of night",
+            "and I knew nothing would ever be the same"
+        ]
+        
+        addition = random.choice(noir_additions)
+        return f"I watched as {text.lower()} {addition}. This case was getting complicated."
+    
+    @staticmethod
+    def _quick_cooking_show(text: str) -> str:
+        """Quick cooking show transformation"""
+        cooking_additions = [
+            "Beautiful!", "Look at that gorgeous technique!",
+            "Absolutely perfect!", "And there we have it!",
+            "Magnificent results!", "Stunning presentation!"
+        ]
+        
+        addition = random.choice(cooking_additions)
+        return f"Now we have {text.lower()} - {addition}"
+    
+    @staticmethod
+    def _quick_yoga_instructor(text: str) -> str:
+        """Quick yoga instructor transformation"""
+        yoga_additions = [
+            "breathe into this moment", "find your center here",
+            "honor where you are today", "let go of any tension",
+            "ground yourself in this space", "beautiful awareness"
+        ]
+        
+        addition = random.choice(yoga_additions)
+        return f"As we {text.lower()}, {addition}. Namaste."
 
 # Convenience functions for backward compatibility
 def get_joey_diaz_mode_prompt() -> str:
@@ -346,3 +627,65 @@ def transform_to_trivia_mode(text: str) -> str:
 
 def transform_to_weed_mode(text: str) -> str:
     return CaptionModes._quick_weed(text)
+
+# New convenience functions for new modes
+def get_eli5_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['eli5']['prompt']
+
+def get_gen_z_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['gen_z']['prompt']
+
+def get_conspiracy_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['conspiracy']['prompt']
+
+def get_motivational_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['motivational']['prompt']
+
+def get_boomer_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['boomer']['prompt']
+
+def get_academic_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['academic']['prompt']
+
+def get_sports_commentator_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['sports_commentator']['prompt']
+
+def get_film_noir_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['film_noir']['prompt']
+
+def get_cooking_show_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['cooking_show']['prompt']
+
+def get_yoga_instructor_mode_prompt() -> str:
+    return CaptionModes.get_all_modes()['yoga_instructor']['prompt']
+
+# Quick transform functions for new modes
+def transform_to_eli5_mode(text: str) -> str:
+    return CaptionModes._quick_eli5(text)
+
+def transform_to_gen_z_mode(text: str) -> str:
+    return CaptionModes._quick_gen_z(text)
+
+def transform_to_conspiracy_mode(text: str) -> str:
+    return CaptionModes._quick_conspiracy(text)
+
+def transform_to_motivational_mode(text: str) -> str:
+    return CaptionModes._quick_motivational(text)
+
+def transform_to_boomer_mode(text: str) -> str:
+    return CaptionModes._quick_boomer(text)
+
+def transform_to_academic_mode(text: str) -> str:
+    return CaptionModes._quick_academic(text)
+
+def transform_to_sports_commentator_mode(text: str) -> str:
+    return CaptionModes._quick_sports_commentator(text)
+
+def transform_to_film_noir_mode(text: str) -> str:
+    return CaptionModes._quick_film_noir(text)
+
+def transform_to_cooking_show_mode(text: str) -> str:
+    return CaptionModes._quick_cooking_show(text)
+
+def transform_to_yoga_instructor_mode(text: str) -> str:
+    return CaptionModes._quick_yoga_instructor(text)
