@@ -175,3 +175,46 @@ async def clear_all_caption_cache():
         cleared_count += 1
     
     return {"message": f"Cleared {cleared_count} cache entries"}
+
+@router.get("/ollama/models")
+async def get_ollama_models():
+    """Get available Ollama models"""
+    if not subtitle_processor:
+        raise HTTPException(status_code=500, detail="Subtitle processor not initialized")
+    
+    try:
+        models = subtitle_processor.get_available_models()
+        current_model = subtitle_processor.get_current_model()
+        return {
+            "available_models": models,
+            "current_model": current_model
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching models: {str(e)}")
+
+@router.post("/ollama/set-model")
+async def set_ollama_model(model_name: str):
+    """Set the current Ollama model for caption transformation"""
+    if not subtitle_processor:
+        raise HTTPException(status_code=500, detail="Subtitle processor not initialized")
+    
+    success = subtitle_processor.set_current_model(model_name)
+    if success:
+        return {"message": f"Successfully switched to model: {model_name}"}
+    else:
+        raise HTTPException(status_code=400, detail=f"Failed to switch to model: {model_name}")
+
+@router.post("/ollama/pull-model")
+async def pull_ollama_model(model_name: str):
+    """Pull a new Ollama model"""
+    if not subtitle_processor:
+        raise HTTPException(status_code=500, detail="Subtitle processor not initialized")
+    
+    try:
+        success = await subtitle_processor.pull_model(model_name)
+        if success:
+            return {"message": f"Successfully pulled model: {model_name}"}
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to pull model: {model_name}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error pulling model: {str(e)}")

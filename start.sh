@@ -10,6 +10,27 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
+# Check if Ollama is running
+echo "🦙 Checking Ollama server..."
+if ! curl -s http://localhost:11434/api/tags > /dev/null 2>&1; then
+    echo "❌ Ollama server is not running!"
+    echo "💡 Please install and start Ollama:"
+    echo "   curl -fsSL https://ollama.ai/install.sh | sh"
+    echo "   ollama serve"
+    echo "   ollama pull llama3.2"
+    echo ""
+    echo "🔄 Continuing without Ollama (you can start it later)..."
+else
+    echo "✅ Ollama server is running"
+    # Check if we have any models
+    if ollama list | grep -q "NAME"; then
+        echo "✅ Ollama models available"
+    else
+        echo "⚠️ No Ollama models found. Consider pulling a model:"
+        echo "   ollama pull llama3.2"
+    fi
+fi
+
 # Function to check if port is in use
 check_port() {
     if lsof -Pi :$1 -sTCP:LISTEN -t >/dev/null ; then

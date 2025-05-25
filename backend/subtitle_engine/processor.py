@@ -7,16 +7,32 @@ from typing import Dict, List, Optional
 import pysrt
 import webvtt
 import subprocess
-from openai import OpenAI
-from anthropic import Anthropic
+import ollama
 from dotenv import load_dotenv
 
 load_dotenv()
 
 class SubtitleProcessor:
     def __init__(self):
-        self.openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY')) if os.getenv('OPENAI_API_KEY') else None
-        self.anthropic_client = Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY')) if os.getenv('ANTHROPIC_API_KEY') else None
+        # Initialize Ollama client
+        self.ollama_client = ollama.Client(host=os.getenv('OLLAMA_HOST', 'http://localhost:11434'))
+        self.current_model = os.getenv('OLLAMA_MODEL', 'llama3.2')
+        
+        # Test Ollama connection
+        try:
+            models = self.get_available_models()
+            if models:
+                print(f"🦙 Connected to Ollama with {len(models)} models available")
+                if self.current_model not in [m['name'] for m in models]:
+                    print(f"⚠️ Model '{self.current_model}' not found. Available models: {[m['name'] for m in models]}")
+                    if models:
+                        self.current_model = models[0]['name']
+                        print(f"🔄 Switched to available model: {self.current_model}")
+            else:
+                print("⚠️ No Ollama models found. Please pull a model first with: ollama pull llama3.2")
+        except Exception as e:
+            print(f"❌ Failed to connect to Ollama: {e}")
+            print("💡 Make sure Ollama is running: ollama serve")
         self.cache_dir = Path(os.getenv('CAPTION_MODE_CACHE_DIR', './data/cache'))
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         
@@ -154,36 +170,25 @@ class SubtitleProcessor:
             return text
         
         try:
-            # Try OpenAI first
-            if self.openai_client:
-                response = self.openai_client.chat.completions.create(
-                    model=os.getenv('LLM_MODEL', 'gpt-3.5-turbo'),
-                    messages=[
-                        {"role": "system", "content": prompt},
-                        {"role": "user", "content": text}
-                    ],
-                    max_tokens=200,
-                    temperature=0.7
-                )
-                return response.choices[0].message.content.strip()
+            # Use Ollama for caption transformation
+            full_prompt = f"{prompt}\n\nOriginal caption: {text}\n\nTransformed caption:"
             
-            # Fallback to Anthropic
-            elif self.anthropic_client:
-                response = self.anthropic_client.messages.create(
-                    model="claude-3-haiku-20240307",
-                    max_tokens=200,
-                    messages=[
-                        {"role": "user", "content": f"{prompt}\n\nOriginal caption: {text}"}
-                    ]
-                )
-                return response.content[0].text.strip()
+            response = self.ollama_client.generate(
+                model=self.current_model,
+                prompt=full_prompt,
+                options={
+                    'temperature': 0.7,
+                    'top_p': 0.9,
+                    'max_tokens': 200,
+                    'stop': ['\n\n', 'Original caption:', 'Transformed caption:']
+                }
+            )
             
-            else:
-                print("No LLM API keys configured")
-                return text
+            transformed_text = response['response'].strip()
+            return transformed_text if transformed_text else text
                 
         except Exception as e:
-            print(f"Error transforming caption: {e}")
+            print(f"Error transforming caption with Ollama: {e}")
             return text
     
     async def transform_subtitles(self, subtitle_path: str, mode: str, batch_size: int = 5) -> Dict:
@@ -351,3 +356,42 @@ class SubtitleProcessor:
             
         except Exception as e:
             return {"error": f"Failed to analyze subtitle file: {e}"}
+    
+    def get_available_models(self) -> List[Dict]:
+        """Get list of available Ollama models"""
+        try:
+            models = self.ollama_client.list()
+            return models.get('models', [])
+        except Exception as e:
+            print(f"Error fetching Ollama models: {e}")
+            return []
+    
+    def set_current_model(self, model_name: str) -> bool:
+        """Set the current model for caption transformation"""
+        try:
+            available_models = [m['name'] for m in self.get_available_models()]
+            if model_name in available_models:
+                self.current_model = model_name
+                print(f"🔄 Switched to model: {model_name}")
+                return True
+            else:
+                print(f"❌ Model '{model_name}' not available. Available models: {available_models}")
+                return False
+        except Exception as e:
+            print(f"Error setting model: {e}")
+            return False
+    
+    def get_current_model(self) -> str:
+        """Get the currently selected model"""
+        return self.current_model
+    
+    async def pull_model(self, model_name: str) -> bool:
+        """Pull a new model from Ollama registry"""
+        try:
+            print(f"📥 Pulling model: {model_name}...")
+            self.ollama_client.pull(model_name)
+            print(f"✅ Successfully pulled model: {model_name}")
+            return True
+        except Exception as e:
+            print(f"❌ Error pulling model {model_name}: {e}")
+            return False
