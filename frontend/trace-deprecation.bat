@@ -1,0 +1,3 @@
+@echo off
+echo Running Next.js with deprecation tracing...
+node --trace-deprecation ./node_modules/next/dist/bin/next dev

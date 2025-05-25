@@ -81,6 +81,10 @@ async def root():
 async def health_check():
     return {"status": "healthy", "scanner_active": media_scanner is not None}
 
+@app.get("/api/health")  # Separate route definition for frontend compatibility
+async def api_health_check():
+    return {"status": "healthy", "scanner_active": media_scanner is not None}
+
 # WebSocket for real-time updates
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):

@@ -17,8 +17,7 @@ interface MediaItem {
   last_watched?: number
 }
 
-export default function Home() {
-  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null)
+export default function Home() {  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null)
   const [selectedCaptionMode, setSelectedCaptionMode] = useState('original')
   const [showSettings, setShowSettings] = useState(false)
   const [isTransforming, setIsTransforming] = useState(false)
@@ -26,11 +25,23 @@ export default function Home() {
   const handleSelectMedia = (media: MediaItem) => {
     setSelectedMedia(media)
     setSelectedCaptionMode('original') // Reset to original when switching media
+    setShowSettings(false) // Reset settings when changing media
   }
 
   const handleBackToLibrary = () => {
     setSelectedMedia(null)
     setShowSettings(false)
+  }
+    // Explicitly handle settings toggle
+  const toggleSettings = () => {
+    const newState = !showSettings;
+    console.log("Toggling settings. Current state:", showSettings, "New state:", newState);
+    setShowSettings(newState);
+    
+    // Force a DOM update if needed
+    setTimeout(() => {
+      console.log("Settings state after update:", newState);
+    }, 100);
   }
 
   const handleCaptionModeChange = async (mode: string) => {
@@ -133,12 +144,13 @@ export default function Home() {
                   <span className="hidden sm:inline">Export</span>
                 </button>
               )}
-              
-              <button
-                onClick={() => setShowSettings(!showSettings)}
+                <button
+                onClick={toggleSettings}
                 className={`p-2 rounded-lg transition-colors ${
                   showSettings ? 'bg-media-accent text-white' : 'text-gray-400 hover:text-white'
                 }`}
+                aria-label="Toggle Settings"
+                title="Settings"
               >
                 <Settings className="w-5 h-5" />
               </button>
@@ -164,13 +176,12 @@ export default function Home() {
                   <p className="text-gray-400 text-sm mt-1">This may take a moment</p>
                 </div>
               </div>
-            )}
-          </div>
-
+            )}          </div>
           {/* Settings Sidebar */}
           {showSettings && (
-            <div className="w-80 bg-media-gray border-l border-gray-700 p-6 overflow-y-auto">
+            <div className="w-80 bg-media-gray border-l border-gray-700 p-6 overflow-y-auto z-50">
               <div className="space-y-6">
+                <h2 className="text-xl font-semibold text-white mb-4">Settings</h2>
                 <CaptionModeSelector
                   selectedMode={selectedCaptionMode}
                   onModeChange={handleCaptionModeChange}
@@ -260,8 +271,13 @@ export default function Home() {
             <button className="flex items-center space-x-2 px-4 py-2 bg-media-accent hover:bg-media-hover text-white rounded-lg transition-colors">
               <Share2 className="w-4 h-4" />
               <span>Share Library</span>
-            </button>
-            <button className="p-2 text-gray-400 hover:text-white transition-colors">
+            </button>            
+            <button 
+              onClick={toggleSettings} 
+              className="p-2 text-gray-400 hover:text-white transition-colors"
+              aria-label="Toggle Settings"
+              title="Settings"
+            >
               <Settings className="w-5 h-5" />
             </button>
           </div>
@@ -269,8 +285,67 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <div className="p-6">
-        <LibraryBrowser onSelectMedia={handleSelectMedia} />
+      <div className="flex">
+        <div className={`flex-1 p-6 ${showSettings ? 'pr-0' : ''}`}>
+          <LibraryBrowser onSelectMedia={handleSelectMedia} />
+        </div>
+        
+        {/* Library Settings Panel */}
+        {showSettings && (
+          <div className="w-80 bg-media-gray border-l border-gray-700 p-6 overflow-y-auto z-50 h-[calc(100vh-73px)]">
+            <div className="space-y-6">
+              <h2 className="text-xl font-semibold text-white mb-4">Settings</h2>
+              
+              {/* General Settings */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white">General</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white">Dark Mode</span>
+                    <label className="relative inline-block w-12 h-6 rounded-full bg-gray-600">
+                      <input type="checkbox" className="sr-only peer" defaultChecked />
+                      <span className="absolute cursor-pointer inset-0.5 rounded-full bg-media-accent peer-checked:right-0.5 peer-checked:left-auto left-0.5 w-5 h-5 transition-all"></span>
+                    </label>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-white mb-1">Default Caption Mode</label>
+                    <select className="w-full px-3 py-2 bg-media-gray border border-gray-600 rounded text-white">
+                      <option value="original">Original</option>
+                      <option value="weed">Chill/Stoner</option>
+                      <option value="theo_von">Theo Von</option>
+                      <option value="joey_diaz">Joey Diaz</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Library Settings */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white">Library</h3>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-white mb-1">Default View</label>
+                    <select className="w-full px-3 py-2 bg-media-gray border border-gray-600 rounded text-white">
+                      <option value="grid">Grid</option>
+                      <option value="list">List</option>
+                    </select>
+                  </div>
+                  
+                  <button className="w-full px-4 py-2 bg-media-gray border border-gray-600 hover:border-gray-500 text-white rounded-lg transition-colors text-left">
+                    Scan Library Now
+                  </button>
+                </div>
+              </div>
+              
+              {/* About */}
+              <div className="pt-4 mt-6 border-t border-gray-700">
+                <p className="text-gray-400 text-sm">LLM Media Player v1.0.0</p>
+                <p className="text-gray-500 text-xs mt-1">Powered by AI-enhanced captions</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
